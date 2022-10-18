@@ -17,8 +17,8 @@ const CategoryBar = () => {
     <div className="categoryBarContainer">
       <div className='categoryBarContent'>
         {
-          categories.map(category => (
-            <Link to={category.url}>{category.title}</Link>
+          categories.map((category, index) => (
+            <Link to={category.url} key={index}>{category.title}</Link>
           ))
         }
       </div>

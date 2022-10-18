@@ -1,6 +1,7 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CategoryBar from '../components/CategoryBar';
+import { connect } from "react-redux";
 
 // mock data danh mục sản phẩm
 const categories = [
@@ -14,9 +15,16 @@ const categories = [
   { url: "/banh-keo", title: "bánh kẹo" },
 ]
 
-const Header = ({ isOpen, isOpenProfile }) => {
+const Header = ({ isOpen, isOpenProfile, products }) => {
 
-  const userLocalStorage = JSON.parse(localStorage.getItem("userInfo"))
+  const [userLocalStorage, setUserLocalStorage] = useState(JSON.parse(localStorage.getItem("userInfo")))
+
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("userInfo"))) {
+      setUserLocalStorage(JSON.parse(localStorage.getItem("userInfo")))
+    }
+  }, [JSON.parse(localStorage.getItem("userInfo"))])
 
   return (
     <div>
@@ -26,14 +34,14 @@ const Header = ({ isOpen, isOpenProfile }) => {
           <div className="header">
             {/* Phần Logo */}
             <div className="logo">
-              <a href="/">
+              <Link to="/">
                 <img
                   src="../img/tiki-logo.png"
                   alt="Tiki Logo"
                   width={60}
                   height={40}
                 />
-              </a>
+              </Link>
             </div>
             {/* Phần tìm kiếm */}
             <div className="search">
@@ -64,19 +72,21 @@ const Header = ({ isOpen, isOpenProfile }) => {
                   height={32}
                   onClick={userLocalStorage ? isOpenProfile : ""}
                 />
-                <div className="register">
-                  <span onClick={isOpen}>{userLocalStorage?.email ? 'Tài khoản' : "Đăng Nhập/ Đăng Ký"}</span>
+                <div className="register" onClick={isOpen}>
+                  <span>{userLocalStorage?.email ? 'Tài khoản' : "Đăng Nhập/ Đăng Ký"}</span>
                   <span>{userLocalStorage?.email ? userLocalStorage?.email : "Tài khoản"}</span>
                 </div>
               </div>
               {/* Phần giỏ hàng */}
-              <div className="cartItem">
-                <div className="cartWrapper">
-                  <img src="../img/cart.png" alt="Cart" width={32} height={32} />
-                  <span className="cartNumber">0</span>
+              <Link to="/cart" >
+                <div className="cartItem">
+                  <div className="cartWrapper">
+                    <img src="../img/cart.png" alt="Cart" width={32} height={32} />
+                    <span className="cartNumber">{products?.length || 0}</span>
+                  </div>
+                  <span>Giỏ Hàng </span>
                 </div>
-                <span>Giỏ Hàng </span>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -97,12 +107,23 @@ const Header = ({ isOpen, isOpenProfile }) => {
             {/* Phần danh mục */}
             <div className="quickMenuContent">
               {
-                categories.map(category => (
-                  <Link to={category.url}>{category.title}</Link>
+                categories.map((category, index) => (
+                  <Link to={category.url} key={index}>{category.title}</Link>
                 ))
               }
             </div>
             {/* Phần bán hàng */}
+            {userLocalStorage &&
+              <div style={{ position: "absolute", right: 250, cursor: "pointer" }} onClick={() => {
+                localStorage.removeItem("userInfo")
+                setUserLocalStorage("")
+              }}>
+                <span style={{ backgroundColor: "rgba(255, 255, 255, 0.25)", padding: "5px 10px", borderRadius: 24, fontSize: 12, color: "#fff" }}>
+                  Đăng xuất
+                </span>
+              </div>
+            }
+
             <div className="store">
               <div>
                 <a href="#">
@@ -120,4 +141,13 @@ const Header = ({ isOpen, isOpenProfile }) => {
   );
 };
 
-export default Header;
+const mapStateToProps = state => {
+  return {
+    products: state.products
+  };
+};
+
+export default connect(
+  mapStateToProps,
+)(Header);
+

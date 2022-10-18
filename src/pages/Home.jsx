@@ -27,6 +27,7 @@ const Home = () => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+
   const showProfile = async () => {
     try {
       const res = await axios.get(getProfileUser, {
@@ -41,6 +42,7 @@ const Home = () => {
 
     setOpenProfile(true);
   };
+
   const handleOk = async () => {
     // login
 
@@ -71,8 +73,7 @@ const Home = () => {
     <div style={{ background: 'rgb(245, 245, 250)' }}>
 
       {/* Phần Header */}
-      <HeaderComponent isOpenProfile={showProfile} isOpen={showModal}></HeaderComponent>
-
+      <HeaderComponent isOpenProfile={showProfile} isOpen={showModal} />
       <BannerComponent></BannerComponent>
       {/* Phần Main */}
       <BodyComponent></BodyComponent>
@@ -102,19 +103,31 @@ const Home = () => {
         onCancel={() => setOpenProfile(false)}
       >
         <div>
-          <span>id: {userData ? userData?.id : ""}</span>
+          <span>Id: {userData ? userData?.id : ""}</span>
         </div>
         <div style={{ margin: "10px 0" }}></div>
 
         <div>
-          <span>username: {userData ? userData?.email : ""}</span>
+          <span>Tài khoản: {userData ? userData?.email : ""}</span>
         </div>
 
         <div style={{ margin: "10px 0" }}></div>
 
+
+        <div>
+          <span>Điện thoại: {userData ? userData?.phone : ""}</span>
+        </div>
+
+        <div style={{ margin: "10px 0" }}></div>
+
+        <div>
+          <span>Địa chỉ: {userData ? userData?.address : ""}</span>
+        </div>
+
+        <div style={{ margin: "10px 0" }}></div>
         <div>
           <span>
-            ngày tạo:
+            Ngày tạo:
             {userData
               ? " " + new Date(userData?.created_at).toDateString()
               : ""}

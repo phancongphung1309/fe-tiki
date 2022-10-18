@@ -1,18 +1,23 @@
 import React from 'react'
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
-import { Col, Row } from 'antd';
+import { Col, Row, message } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProductItem from "../product-page/ProductItem";
 import ReactLoading from 'react-loading';
-
+import { connect } from "react-redux";
 import axios from 'axios';
+import { addProductToCart } from "../../store/actions/cart";
 
 const productURL = `${process.env.REACT_APP_API}/product`;
 const productListURL = `${process.env.REACT_APP_API}/products`;
 
-export default function ProductDetail() {
+
+
+const ProductDetail = (props) => {
+    const [userLocalStorage, setUserLocalStorage] = useState(JSON.parse(localStorage.getItem("userInfo")))
+
 
     const [products, setProducts] = useState({
         isLoading: true,
@@ -32,7 +37,6 @@ export default function ProductDetail() {
 
         }
     }
-
 
     const convertImages = (images) => {
         const tempImages = [];
@@ -79,6 +83,12 @@ export default function ProductDetail() {
     }, [id])
 
 
+    useEffect(() => {
+        if (JSON.parse(localStorage.getItem("userInfo"))) {
+            setUserLocalStorage(JSON.parse(localStorage.getItem("userInfo")))
+        }
+    }, [JSON.parse(localStorage.getItem("userInfo"))])
+
     return (
         <Row>
             <Col span={10}>
@@ -112,7 +122,7 @@ export default function ProductDetail() {
 
                             </div>
                             <div className="product-price">
-                                <div className="product-price__current-price">{formatCurrency(productState.price)}</div>
+                                <div className="product-price__current-price">{formatCurrency(productState.price || 0)}</div>
                             </div>
                             <div className="quantity">
                                 <p>Số Lượng</p>
@@ -127,7 +137,15 @@ export default function ProductDetail() {
                                 </div>
                             </div>
                             <div className="group-button">
-                                <button className='btn btn-add-to-cart'>Chọn mua</button>
+                                <button className='btn btn-add-to-cart' onClick={() => {
+                                    if (userLocalStorage?.id) {
+                                        message.success('Thêm vào giỏ hàng thành công')
+                                        props.addProduct(productState)
+                                    } else {
+                                        message.error('Vui lòng đăng nhập')
+                                    }
+
+                                }}>Chọn mua</button>
                             </div>
                         </Col>
                         <Col span={9}>
@@ -298,3 +316,20 @@ export default function ProductDetail() {
         </Row>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        products: state.products
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addProduct: product => dispatch(addProductToCart(product))
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProductDetail);

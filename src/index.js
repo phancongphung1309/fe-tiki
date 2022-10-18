@@ -7,15 +7,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.min.css'
+import { Provider } from "react-redux";
+import configureStore from "./store/configureStore";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const initialState = {
+  categories: [],
+  categoriesIsLoading: false,
+  products: []
+};
+
+const store = configureStore(initialState);
 root.render(
   <React.StrictMode>
 
     <BrowserRouter>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
-    
+
   </React.StrictMode>
 );
 
