@@ -182,6 +182,7 @@ html {
     margin-left: 206px;
     display: flex;
     align-items: flex-start;
+    flex: 1;
 }
 
 .quickMenuContent a {

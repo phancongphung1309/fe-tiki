@@ -114,7 +114,7 @@ const Header = ({ isOpen, isOpenProfile, products }) => {
             </div>
             {/* Phần bán hàng */}
             {userLocalStorage &&
-              <div style={{ position: "absolute", right: 250, cursor: "pointer" }} onClick={() => {
+              <div style={{ position: "relative", right: 20, cursor: "pointer" }} onClick={() => {
                 localStorage.removeItem("userInfo")
                 setUserLocalStorage("")
               }}>
