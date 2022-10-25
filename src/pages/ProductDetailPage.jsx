@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import HeaderComponent from '../components/Header';
 import ProductDetail from '../components/product-page/ProductDetail';
 import FooterComponent from "../components/Footer"
@@ -14,6 +14,8 @@ export default function ProductDetailPage() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [userState, setUserState] = useState("")
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -32,6 +34,7 @@ export default function ProductDetailPage() {
                 localStorage.setItem("userInfo", JSON.stringify(res?.data?.data))
                 localStorage.setItem("token", JSON.stringify(res?.data?.token));
                 setIsModalVisible(false);
+                handleUpdateUser()
             } else {
                 message.error("Đăng nhập thất bại", 2.0)
             }
@@ -43,12 +46,19 @@ export default function ProductDetailPage() {
         setIsModalVisible(false);
     };
 
+    const handleUpdateUser = () => setUserState(JSON.parse(localStorage.getItem("userInfo")))
+
+
+    useEffect(() => {
+        setUserState(JSON.parse(localStorage.getItem("userInfo")))
+    }, [])
+
 
     return (
         <div style={{ background: 'rgb(245, 245, 250)' }}>
             <HeaderComponent isOpen={showModal} />
             <div className="container" style={{ background: "#fff", marginBottom: 20 }}>
-                <ProductDetail />
+                <ProductDetail userState={userState} />
             </div>
 
             {/* Phần Footer */}

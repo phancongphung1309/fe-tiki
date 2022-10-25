@@ -567,6 +567,16 @@ body {
     margin-right: auto;
 }
 
+.orderSuccessPageBody {
+    width: 1270px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .mainViewContainer {
     background-color: #fff;
     width: 991px;
@@ -1375,4 +1385,53 @@ body {
 .productImg img {
     width: 80px;
     height: 80px;
+}
+
+.orderSuccessPage {
+    text-align: center;
+    padding: 60px;
+    background-color: #fff;
+}
+
+.orderSuccessIcon span {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #0080008f;
+}
+
+.orderSuccessContent h3 {
+    font-size: 24px;
+}
+
+.btn.btn-go-to-shopping {
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 57, 69);
+}
+
+.btn.btn-go-to-shopping {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 190px;
+    width: 100%;
+    max-width: 300px;
+    height: 48px;
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    margin: 0px auto;
+}
+
+.orderSuccessContent p {
+    margin: 20px 0px;
+}
+
+.orderSuccessContent h3 {
+    font-size: 24px;
+    margin: 0px;
 }

@@ -16,8 +16,7 @@ const productListURL = `${process.env.REACT_APP_API}/products`;
 
 
 const ProductDetail = (props) => {
-    const [userLocalStorage, setUserLocalStorage] = useState(JSON.parse(localStorage.getItem("userInfo")))
-
+    const [userLocalStorage, setUserLocalStorage] = useState()
 
     const [products, setProducts] = useState({
         isLoading: true,
@@ -84,10 +83,13 @@ const ProductDetail = (props) => {
 
 
     useEffect(() => {
-        if (JSON.parse(localStorage.getItem("userInfo"))) {
-            setUserLocalStorage(JSON.parse(localStorage.getItem("userInfo")))
+        if (props?.userState) {
+            setUserLocalStorage(props?.userState)
         }
-    }, [JSON.parse(localStorage.getItem("userInfo"))])
+    }, [props?.userState])
+
+    console.log("😭PCP ~ file: ProductDetail.jsx ~ line 88 ~ useEffect ~ props?.userState", props?.userState)
+
 
     return (
         <Row>
@@ -138,7 +140,7 @@ const ProductDetail = (props) => {
                             </div>
                             <div className="group-button">
                                 <button className='btn btn-add-to-cart' onClick={() => {
-                                    if (userLocalStorage?.id) {
+                                    if (props?.userState?.id) {
                                         message.success('Thêm vào giỏ hàng thành công')
                                         props.addProduct(productState)
                                     } else {

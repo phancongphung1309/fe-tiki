@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CategoryBar from '../components/CategoryBar';
 import { connect } from "react-redux";
 
@@ -18,13 +18,14 @@ const categories = [
 const Header = ({ isOpen, isOpenProfile, products }) => {
 
   const [userLocalStorage, setUserLocalStorage] = useState(JSON.parse(localStorage.getItem("userInfo")))
+  const navigate = useNavigate();
 
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("userInfo"))) {
       setUserLocalStorage(JSON.parse(localStorage.getItem("userInfo")))
     }
-  }, [JSON.parse(localStorage.getItem("userInfo"))])
+  }, [localStorage.getItem("userInfo")])
 
   return (
     <div>
@@ -117,6 +118,7 @@ const Header = ({ isOpen, isOpenProfile, products }) => {
               <div style={{ position: "relative", right: 20, cursor: "pointer" }} onClick={() => {
                 localStorage.removeItem("userInfo")
                 setUserLocalStorage("")
+                navigate("/")
               }}>
                 <span style={{ backgroundColor: "rgba(255, 255, 255, 0.25)", padding: "5px 10px", borderRadius: 24, fontSize: 12, color: "#fff" }}>
                   Đăng xuất

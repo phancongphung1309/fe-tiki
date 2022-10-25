@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import "react-image-gallery/styles/css/image-gallery.css";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeProductFromCart, resetProductOfCart } from "../store/actions/cart";
 import HeaderComponent from '../components/Header';
 import { Modal, Input, Space, message, Col, Row } from 'antd';
@@ -18,6 +18,7 @@ const calculateTotal = (total, currentItem) =>
 
 const CartDetail = (props) => {
     const userLocalStorage = JSON.parse(localStorage.getItem("userInfo"))
+    const navigate = useNavigate();
 
     const products = props.products
 
@@ -160,7 +161,7 @@ const CartDetail = (props) => {
                                 </div>
                             </div>
                             <button disabled={products?.length > 0 ? false : true} className='btnBuy' onClick={() => {
-                                message.success('Đặt hàng thành công')
+                                navigate('/order-success');
                                 props.resetProduct()
                             }}>
                                 Mua Hàng
